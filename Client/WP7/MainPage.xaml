@@ -1,0 +1,118 @@
+﻿<local:BasePage 
+    x:Class="JREndean.HIP.Client.WP7.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:JREndean.HIP.Client.WP7"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="696"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    shell:SystemTray.IsVisible="True"
+    toolkit:TiltEffect.IsTiltEnabled="True">
+
+    <toolkit:TransitionService.NavigationInTransition>
+        <toolkit:NavigationInTransition>
+            <toolkit:NavigationInTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardIn"/>
+            </toolkit:NavigationInTransition.Backward>
+            <toolkit:NavigationInTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardIn"/>
+            </toolkit:NavigationInTransition.Forward>
+        </toolkit:NavigationInTransition>
+    </toolkit:TransitionService.NavigationInTransition>
+    <toolkit:TransitionService.NavigationOutTransition>
+        <toolkit:NavigationOutTransition>
+            <toolkit:NavigationOutTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardOut"/>
+            </toolkit:NavigationOutTransition.Backward>
+            <toolkit:NavigationOutTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardOut"/>
+            </toolkit:NavigationOutTransition.Forward>
+        </toolkit:NavigationOutTransition>
+    </toolkit:TransitionService.NavigationOutTransition>
+    
+    <Grid Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Popup x:Name="PopupVoice" 
+               IsOpen="false" 
+               Opened="PopupVoice_Opened">
+            <StackPanel Background="{StaticResource PhoneChromeBrush}">
+                <TextBlock Text="Listening..."
+                           Width="455"
+                           Style="{StaticResource PhoneTextTitle1Style}"/>
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Right">
+                    <Button Content="Go..."
+                            MinWidth="150"
+                            Click="ButtonStopListening_Click" />
+                    <Button Content="Cancel"
+                            MinWidth="150"
+                            Click="ButtonCancel_Click" />
+                </StackPanel>
+            </StackPanel>
+        </Popup>
+
+        
+        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
+            <TextBlock x:Name="PageTitle" Text="HIP" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <TextBlock Name="User" Margin="9,-7,0,0"   />
+        </StackPanel>
+        
+        
+        <ScrollViewer Grid.Row="1">
+            <Grid Name="TileGrid" Width="370" HorizontalAlignment="Left" Margin="12,0,0,12">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+            </Grid>
+        </ScrollViewer>
+        
+        <toolkit:ContextMenuService.ContextMenu>
+            <toolkit:ContextMenu x:Name="HubTileContextMenu"
+                                    IsZoomEnabled="True">
+                <toolkit:MenuItem Header="pin to start"
+                                    CommandParameter="PinToStart"
+                                    Click="ContextMenuItem_Click">
+                </toolkit:MenuItem>
+            </toolkit:ContextMenu>
+        </toolkit:ContextMenuService.ContextMenu>
+        
+    </Grid>
+    
+    <local:BasePage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
+            <shell:ApplicationBarIconButton IconUri="/Images/microphone.png"
+                                            Text="voice"
+                                            Click="ApplicationBarIconButtonVoice_Click"
+                                            />
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar.feature.settings.rest.png"
+                                            Text="settings"
+                                            Click="ApplicationBarIconButtonSettings_Click"
+                                            />
+            <shell:ApplicationBar.MenuItems>
+                <shell:ApplicationBarMenuItem Text="About..."
+                                              Click="ApplicationBarMenuItemAbout_Click"/>
+            </shell:ApplicationBar.MenuItems>
+        </shell:ApplicationBar>
+    </local:BasePage.ApplicationBar>
+
+</local:BasePage>

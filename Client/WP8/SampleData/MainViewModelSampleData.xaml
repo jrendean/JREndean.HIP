@@ -1,0 +1,54 @@
+﻿<local:MainViewModel 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"       
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:JREndean.HIP.Client.WP8">
+    
+    <local:MainViewModel.Cameras>
+        <!--
+        <local:CamerasViewModel Image="http://ganymede.dlinkddns.com:8101/image.jpg" Name="Cat Beds" />
+        <local:CamerasViewModel Image="http://ganymede.dlinkddns.com:8102/image.jpg" Name="Office" />
+        <local:CamerasViewModel Image="http://ganymede.dlinkddns.com:8103/image.jpg" Name="Living Room" />
+        <local:CamerasViewModel Image="http://ganymede.dlinkddns.com:8104/image.jpg" Name="Bedroom" />
+        <local:CamerasViewModel Image="http://ganymede.dlinkddns.com:8105/image.jpg" Name="Garage" />
+        -->
+        <local:CamerasViewModel Image="" Name="Cat Beds" />
+        <local:CamerasViewModel Image="" Name="Office" />
+        <local:CamerasViewModel Image="" Name="Living Room" />
+        <local:CamerasViewModel Image="" Name="Bedroom" />
+        <local:CamerasViewModel Image="" Name="Garage" />
+    </local:MainViewModel.Cameras>
+    
+    <local:MainViewModel.Automation>
+        <local:AutomationViewModel Room="Bedroom">
+            <local:AutomationViewModel.Devices>
+                <local:DeviceViewModel Name="Small Lamp" />
+                <local:DeviceViewModel Name="Large Lamp" />
+            </local:AutomationViewModel.Devices>
+        </local:AutomationViewModel>
+        
+        <local:AutomationViewModel Room="Living room">
+            <local:AutomationViewModel.Devices>
+                <local:DeviceViewModel Name="Lamp" />
+            </local:AutomationViewModel.Devices>
+        </local:AutomationViewModel>
+        
+        <local:AutomationViewModel Room="Porch">
+            <local:AutomationViewModel.Devices>
+                <local:DeviceViewModel Name="Lights" />
+            </local:AutomationViewModel.Devices>
+        </local:AutomationViewModel>
+    </local:MainViewModel.Automation>
+
+
+    <local:MainViewModel.Garage>
+        <local:GarageViewModel Loaded="Visible"
+                               Humidity="40" 
+                               Light="On" 
+                               LightForeColor="Red"
+                               Temperature="70"
+                               Door="Closed"
+                               DoorForeColor="Green"
+                               DoorButtonCommand="Open"
+                               />
+    </local:MainViewModel.Garage>
+</local:MainViewModel>

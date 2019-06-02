@@ -1,0 +1,180 @@
+﻿<local:BasePage 
+    x:Class="JREndean.HIP.Client.WP7.WeatherPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:JREndean.HIP.Client.WP7"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
+    shell:SystemTray.IsVisible="True"
+    toolkit:TiltEffect.IsTiltEnabled="True">
+
+    <toolkit:TransitionService.NavigationInTransition>
+        <toolkit:NavigationInTransition>
+            <toolkit:NavigationInTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardIn"/>
+            </toolkit:NavigationInTransition.Backward>
+            <toolkit:NavigationInTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardIn"/>
+            </toolkit:NavigationInTransition.Forward>
+        </toolkit:NavigationInTransition>
+    </toolkit:TransitionService.NavigationInTransition>
+    <toolkit:TransitionService.NavigationOutTransition>
+        <toolkit:NavigationOutTransition>
+            <toolkit:NavigationOutTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardOut"/>
+            </toolkit:NavigationOutTransition.Backward>
+            <toolkit:NavigationOutTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardOut"/>
+            </toolkit:NavigationOutTransition.Forward>
+        </toolkit:NavigationOutTransition>
+    </toolkit:TransitionService.NavigationOutTransition>
+    
+    <Grid x:Name="LayoutRoot" Background="Transparent">
+        
+        <Popup Name="PopupAddLocation"
+               IsOpen="false"
+               Opened="PopupAddLocation_Opened">
+            <StackPanel Background="{StaticResource PhoneChromeBrush}">
+                <TextBlock Text="Enter the city, state"
+                           Style="{StaticResource PhoneTextTitle2Style}" />
+                
+                <TextBox Name="TextBoxAddLocation"
+                         InputScope="AddressCity"
+                         TextChanged="TextBoxAddLocation_TextChanged"
+                         Width="480" />
+                
+                <ListBox Name="ListBoxSearchedLocations"
+                         SelectionMode="Single"
+                         SelectionChanged="ListBoxSearchedLocations_SelectionChanged">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding DisplayName}"
+                                       Style="{StaticResource PhoneTextExtraLargeStyle}"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Right">
+                    <Button Content="Add"
+                            MinWidth="150"
+                            Click="ButtonAddLocation_Click" />
+                    <Button Content="Cancel"
+                            MinWidth="150"
+                            Click="ButtonCancel_Click" />
+                </StackPanel>
+            </StackPanel>
+        </Popup>
+        
+        <StackPanel Name="NotLoadedSection"
+                    Margin="10,37">
+            <TextBlock Style="{StaticResource PhoneTextTitle1Style}" 
+                       TextWrapping="Wrap"
+                       Text="Weather" />
+            <TextBlock Style="{StaticResource PhoneTextTitle3Style}"
+                       Name="LoadingMessage"   
+                       TextWrapping="Wrap"
+                       Text="Retrieving weather information..." />
+            <TextBlock Style="{StaticResource PhoneTextTitle3Style}"
+                       Name="NoItemsMessage"   
+                       TextWrapping="Wrap"
+                       Visibility="Collapsed"
+                       Text="You have not set up any weather locations. Press the add button or use the GPS button to get the weather for your current location." />
+        </StackPanel>
+        
+        <controls:Pivot Name="WeatherList" Title="HIP">
+            <controls:Pivot.HeaderTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Location}" />
+                </DataTemplate>
+            </controls:Pivot.HeaderTemplate>
+            <controls:Pivot.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel HorizontalAlignment="Left"
+                                Margin="10,0,0,0">
+
+                        <TextBlock Text="Currently"
+                                    Margin="0,10"
+                                    Style="{StaticResource PhoneTextLargeStyle}" />
+                        <Image Width="128" Height="128"
+                                Source="{Binding Image}" />
+                        <TextBlock Text="{Binding Condition}"
+                                    Style="{StaticResource PhoneTextNormalStyle}" />
+                        <TextBlock Text="{Binding Temperature}"
+                                    Style="{StaticResource PhoneTextNormalStyle}" />
+
+
+                        <TextBlock Text="Forecast"
+                                    Margin="0,30,0,10"
+                                    Style="{StaticResource PhoneTextLargeStyle}" />
+                        <ListBox ItemsSource="{Binding Forecast}"
+                                 SelectionMode="Extended"
+                                 toolkit:TiltEffect.SuppressTilt="True">
+                            <ListBox.Style>
+                                <Style TargetType="ListBox">
+                                    <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+                                    <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="ListBox">
+                                                <StackPanel x:Name="ScrollViewer">
+                                                    <ItemsPresenter/>
+                                                </StackPanel>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </ListBox.Style>
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal" Margin="10,0,20,0" />
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Date}"
+                                                   Margin="0,5"
+                                                   Style="{StaticResource PhoneTextNormalStyle}" />
+                                        <Image Width="64" Height="64"
+                                               Source="{Binding Image}" />
+                                        <TextBlock Text="{Binding Condition}" 
+                                                   Style="{StaticResource PhoneTextNormalStyle}" />
+                                        <TextBlock Text="{Binding LowTemperature}"
+                                                   Style="{StaticResource PhoneTextNormalStyle}" />
+                                        <TextBlock Text="{Binding HighTemperature}"
+                                                   Style="{StaticResource PhoneTextNormalStyle}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </StackPanel>
+                </DataTemplate>
+            </controls:Pivot.ItemTemplate>
+        </controls:Pivot>
+    </Grid>
+    
+    <local:BasePage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar.add.rest.png"
+                                            Text="add"
+                                            Click="ApplicationBarIconButton_Click" />
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar.delete.rest.png"
+                                            Text="remove"
+                                            Click="ApplicationBarIconButton_Click" />
+            <shell:ApplicationBarIconButton IconUri="/Images/MB_0005_POI.png"
+                                            Text="gps"
+                                            Click="ApplicationBarIconButton_Click" />
+        </shell:ApplicationBar>
+    </local:BasePage.ApplicationBar>
+
+</local:BasePage>
